@@ -175,7 +175,7 @@
         const resultsBox = document.getElementById('searchResults');
         
         try {
-            const response = await fetch(`http://localhost:8001/api/search?q=${encodeURIComponent(query)}`);
+            const response = await fetch(`/api/search?q=${encodeURIComponent(query)}`);
             const cables = await response.json();
             
             if (cables.length > 0) {
