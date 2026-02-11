@@ -1,0 +1,8 @@
+# No external dependencies required.
+# The server uses only Python standard libraries:
+# - http.server
+# - socketserver
+# - sqlite3
+# - json
+# - urllib.parse
+# - os
