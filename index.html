@@ -88,6 +88,71 @@
             .top-nav, .search-area, .footer, .remove-column, .autocomplete-results { display: none; }
             .container { max-width: 100%; }
         }
+
+        @media screen and (max-width: 768px) {
+            .result-table thead { display: none; }
+            .result-table, .result-table tbody, .result-table tr, .result-table td { display: block; width: 100%; }
+            .result-table tr { margin-bottom: 20px; border: 1px solid #dee2e6; background: #fff; border-radius: 8px; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+            /* First cell (Name) header style */
+            .result-table td:first-child { 
+                background-color: #f8f9fa; 
+                text-align: left; 
+                padding: 15px; 
+                border-bottom: 1px solid #dee2e6; 
+                font-weight: bold; 
+            }
+            .result-table td { 
+                padding: 12px 15px; 
+                text-align: right; 
+                border-bottom: 1px solid #f1f3f5; 
+                position: relative; 
+                padding-left: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: flex-end;
+            }
+            .result-table td:first-child { display: block; padding-left: 15px; justify-content: flex-start; }
+            
+            .result-table td::before { 
+                content: attr(data-label); 
+                position: absolute; 
+                left: 15px; 
+                width: 40%; 
+                white-space: nowrap; 
+                text-align: left; 
+                font-weight: 500; 
+                color: #6c757d; 
+            }
+            
+            .result-table td:first-child::before { display: none; }
+            
+            /* Remove button row */
+            .result-table td:last-child { 
+                border-bottom: none; 
+                padding: 10px; 
+                justify-content: center; 
+                padding-left: 10px; 
+            }
+            .remove-btn { 
+                width: 100%; 
+                background-color: #fff5f5; 
+                padding: 10px; 
+                border-radius: 4px;
+                color: #dc3545;
+            }
+            
+            /* Input field adjustment */
+            .calc-input { width: 100px; } 
+            
+            /* Search area adjustment */
+            .search-area { padding: 20px 0; }
+            .search-input { font-size: 16px; }
+            .search-btn { width: 80px; }
+            
+            /* Grand total */
+            .grand-total-box { text-align: center; margin-top: 20px; font-size: 16px; }
+            .grand-total-val { display: block; margin-top: 5px; font-size: 24px; }
+        }
     </style>
 </head>
 <body>
@@ -240,20 +305,20 @@
             
             const tr = document.createElement('tr');
             tr.innerHTML = `
-                <td>
+                <td data-label="Наименование">
                     <div class="cable-name">${item.name}</div>
                     ${item.drums && item.drums.length > 0 ? `<span class="drum-info">Барабаны: ${item.drums.join(', ')}</span>` : ''}
                 </td>
-                <td class="text-end text-muted">${item.weight_kg_km}</td>
-                <td class="text-end text-muted">${item.diameter_mm}</td>
-                <td class="text-center">
+                <td data-label="Масса, кг/км" class="text-end text-muted">${item.weight_kg_km}</td>
+                <td data-label="Диаметр, мм" class="text-end text-muted">${item.diameter_mm}</td>
+                <td data-label="Длина (м)" class="text-center">
                     <input type="number" class="calc-input" 
                            value="${item.length > 0 ? item.length : ''}" 
                            placeholder="0" 
                            min="0" 
                            oninput="updateLength(${index}, this.value)">
                 </td>
-                <td class="text-end">
+                <td data-label="Общий вес" class="text-end">
                     <span class="total-weight">${item.total.toLocaleString('ru-RU', {minimumFractionDigits: 2, maximumFractionDigits: 2})}</span> <small>кг</small>
                 </td>
                 <td class="text-center remove-column">

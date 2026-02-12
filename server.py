@@ -32,11 +32,15 @@ class CableRequestHandler(http.server.SimpleHTTPRequestHandler):
 
             try:
                 conn = sqlite3.connect(DB_FILE)
+                
+                # Register custom function for case-insensitive search (Cyrillic support)
+                conn.create_function("lower_str", 1, lambda s: s.lower() if s else "")
+
                 cursor = conn.cursor()
                 
-                # Search using LIKE
-                sql = "SELECT name, weight_kg_km, diameter_mm, drums FROM cables WHERE name LIKE ? LIMIT 50"
-                cursor.execute(sql, ('%' + search_query + '%',))
+                # Search using custom lower function
+                sql = "SELECT name, weight_kg_km, diameter_mm, drums FROM cables WHERE lower_str(name) LIKE ? LIMIT 50"
+                cursor.execute(sql, ('%' + search_query.lower() + '%',))
                 rows = cursor.fetchall()
                 print(f"Found {len(rows)} results for '{search_query}'")
                 
